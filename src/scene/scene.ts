@@ -1,14 +1,5 @@
-import {
-  BUTTON_GUTTER,
-  BUTTON_HEIGHT,
-  BUTTON_PER_ROW,
-  BUTTON_WIDTH,
-  DEBUG,
-  DEBUG_OUTPUT,
-  HEIGHT,
-  Rooms
-} from '../core/constants';
-import { Button } from '../ui/button';
+import { BUTTON_GUTTER, BUTTON_HEIGHT, BUTTON_PER_ROW, BUTTON_WIDTH, HEIGHT, Rooms } from '../core/constants';
+import { NavButton } from '../ui/nav-button';
 import { UIElement } from '../ui/ui-element';
 import { Room } from './room';
 
@@ -35,14 +26,10 @@ export class Scene {
 
     this.ui = this.ui.map(element => {
       if (element?.['room']) {
-        element.setActive((<Button>element).room === room);
+        element.setActive((<NavButton>element).room === room);
       }
       return element;
     });
-
-    if (DEBUG) {
-      DEBUG_OUTPUT.textContent += `\nChanged room to ${room}`;
-    }
   }
 
   private createUI() {
@@ -55,20 +42,22 @@ export class Scene {
       const startHeight = HEIGHT - (BUTTON_GUTTER + BUTTON_HEIGHT * rows) - BUTTON_GUTTER;
       const l = (BUTTON_GUTTER + BUTTON_WIDTH) * col + BUTTON_GUTTER;
       let t = startHeight + (BUTTON_HEIGHT + BUTTON_GUTTER) * row;
-      return new Button(l, t, BUTTON_WIDTH, BUTTON_HEIGHT, this.changeRoom.bind(this, key), index + 1, key);
+      return new NavButton(l, t, BUTTON_WIDTH, BUTTON_HEIGHT, this.changeRoom.bind(this, key), index + 1, key);
     });
   }
 
-  public onMouseMove(event: MouseEvent) {
+  public onMouseMove(event: MouseEvent, scaleAmount: number) {
     this.ui.map(element => {
-      element.checkHover(event);
+      element.checkHover(event, scaleAmount);
     });
+    this.room.onMouseMove(event, scaleAmount);
   }
 
-  public onMouseClick(event: MouseEvent) {
+  public onMouseClick(event: MouseEvent, scaleAmount: number) {
     this.ui.map(element => {
-      element.checkClick(event);
+      element.checkClick(event, scaleAmount);
     });
+    this.room.onMouseClick(event, scaleAmount);
   }
 
   public onKeyDown({ key }: KeyboardEvent) {
@@ -96,13 +85,13 @@ export class Scene {
 
   public update(delta: number) {}
 
-  public draw(ctx: CanvasRenderingContext2D) {
+  public draw(ctx: CanvasRenderingContext2D, scaleAmount: number) {
     ctx.save();
 
-    this.room.draw(ctx);
+    this.room.draw(ctx, scaleAmount);
 
     this.ui.map(element => {
-      element.draw(ctx);
+      element.draw(ctx, scaleAmount);
     });
 
     ctx.restore();

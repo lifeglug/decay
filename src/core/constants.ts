@@ -1,5 +1,4 @@
 export const DEBUG = true;
-export const DEBUG_OUTPUT = document.createElement('textarea');
 
 export const CORRUPTION_THRESHOLD = 2;
 

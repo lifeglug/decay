@@ -1,31 +1,32 @@
 import { Scene } from '../scene/scene';
-import { DEBUG_OUTPUT, HEIGHT, WIDTH } from './constants';
+import { HEIGHT, WIDTH } from './constants';
+import { clamp } from './util';
 
 export class Game {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private scene: Scene = new Scene();
   private lastStep: number = 0;
+  private scaleAmount: number = 0;
 
-  constructor(debug: boolean) {
+  constructor() {
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d');
     document.getElementById('viewport').appendChild(this.canvas);
-    this.canvas.width = WIDTH;
-    this.canvas.height = HEIGHT;
-
-    if (debug) {
-      DEBUG_OUTPUT.id = 'debugOutput';
-      DEBUG_OUTPUT.rows = 25;
-      DEBUG_OUTPUT.cols = 80;
-      document.body.appendChild(DEBUG_OUTPUT);
-    }
 
     document.addEventListener('mousedown', this.onMouseClick.bind(this));
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
     document.addEventListener('keydown', this.onKeyDown.bind(this));
+    window.addEventListener('resize', this.resize.bind(this));
 
+    this.resize();
     this.loop(0);
+  }
+
+  private resize() {
+    this.canvas.width = clamp(window.innerWidth, WIDTH, window.innerWidth);
+    this.canvas.height = (this.canvas.width / 16) * 9;
+    this.scaleAmount = this.canvas.width / WIDTH;
   }
 
   private loop(timestamp: number) {
@@ -39,11 +40,11 @@ export class Game {
   }
 
   private onMouseMove(event: MouseEvent) {
-    this.scene.onMouseMove(event);
+    this.scene.onMouseMove(event, this.scaleAmount);
   }
 
   private onMouseClick(event: MouseEvent) {
-    this.scene.onMouseClick(event);
+    this.scene.onMouseClick(event, this.scaleAmount);
   }
 
   private onKeyDown(event: KeyboardEvent) {
@@ -60,6 +61,6 @@ export class Game {
     this.ctx.fillStyle = 'white';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.scene.draw(this.ctx);
+    this.scene.draw(this.ctx, this.scaleAmount);
   }
 }
