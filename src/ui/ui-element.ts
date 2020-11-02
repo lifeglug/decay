@@ -7,33 +7,33 @@ export class UIElement {
     protected y: number,
     protected width: number,
     protected height: number,
-    protected onClick: () => {}
+    protected onClick: () => void
   ) {}
 
   public update(delta: number) {}
 
-  public draw(ctx: CanvasRenderingContext2D, scaleAmount: number) {}
+  public draw(ctx: CanvasRenderingContext2D, scale: number) {}
 
   public setActive(active: boolean) {
     this.active = active;
   }
 
-  public checkMouseOver({ offsetX: x, offsetY: y }: MouseEvent, scaleAmount: number) {
+  public checkMouseOver({ offsetX: x, offsetY: y }: MouseEvent, scale: number) {
     return (
-      x >= this.x * scaleAmount &&
-      x <= (this.x + this.width) * scaleAmount &&
-      y >= this.y * scaleAmount &&
-      y <= (this.y + this.height) * scaleAmount
+      x >= this.x * scale &&
+      x <= (this.x + this.width) * scale &&
+      y >= this.y * scale &&
+      y <= (this.y + this.height) * scale
     );
   }
 
-  public checkClick(event: MouseEvent, scaleAmount: number) {
-    if (this.checkMouseOver(event, scaleAmount)) {
+  public checkClick(event: MouseEvent, scale: number) {
+    if (this.checkMouseOver(event, scale)) {
       this.onClick();
     }
   }
 
-  public checkHover(event: MouseEvent, scaleAmount) {
-    this.hovered = this.checkMouseOver(event, scaleAmount);
+  public checkHover(event: MouseEvent, scale) {
+    this.hovered = this.checkMouseOver(event, scale);
   }
 }

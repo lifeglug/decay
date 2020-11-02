@@ -1,19 +1,20 @@
 import { CORRUPTION_THRESHOLD, HEIGHT, Rooms, WIDTH } from '../core/constants';
 import { getRoomImage } from '../core/util';
 import { Hotspot } from '../ui/hotspot';
-import { UIElement } from '../ui/ui-element';
+import { UI } from '../ui/ui';
 
 export class Room {
   private corruption: number = 0;
   private online: boolean = true;
   private image: HTMLImageElement;
-  private ui: UIElement[] = [
-    new Hotspot(129, 160, 320, 70, this.powerClick.bind(this)),
-    new Hotspot(129, 250, 400, 70, this.corruptionClick.bind(this))
-  ];
+  private ui: UI = new UI();
 
   constructor(public room: Rooms) {
     this.updateRoomImage();
+    this.ui.addElements([
+      new Hotspot(129, 160, 320, 70, this.powerClick.bind(this)),
+      new Hotspot(129, 250, 400, 70, this.corruptionClick.bind(this))
+    ]);
   }
 
   private powerClick() {
@@ -48,26 +49,20 @@ export class Room {
     this.corruptionChanged();
   }
 
-  public onMouseMove(event: MouseEvent, scaleAmount: number) {
-    this.ui.map(element => {
-      element.checkHover(event, scaleAmount);
-    });
+  public onMouseMove(event: MouseEvent, scale: number) {
+    this.ui.onMouseMove(event, scale);
   }
 
-  public onMouseClick(event: MouseEvent, scaleAmount: number) {
-    this.ui.map(element => {
-      element.checkClick(event, scaleAmount);
-    });
+  public onMouseClick(event: MouseEvent, scale: number) {
+    this.ui.onMouseClick(event, scale);
   }
 
-  public draw(ctx: CanvasRenderingContext2D, scaleAmount: number) {
+  public draw(ctx: CanvasRenderingContext2D, scale: number) {
     ctx.save();
 
-    ctx.drawImage(this.image, 0, 0, WIDTH * scaleAmount, HEIGHT * scaleAmount);
+    ctx.drawImage(this.image, 0, 0, WIDTH * scale, HEIGHT * scale);
 
-    this.ui.map(element => {
-      element.draw(ctx, scaleAmount);
-    });
+    this.ui.draw(ctx, scale);
 
     ctx.restore();
   }

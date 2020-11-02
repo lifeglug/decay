@@ -11,10 +11,10 @@ export const BUTTON_HEIGHT = 30;
 export const BUTTON_GUTTER = 20;
 
 export enum Rooms {
-  BRIDGE = 'BRDG',
-  COMMS = 'COMM',
-  NAVIGATION = 'NAV',
-  SENSORS = 'SNSR',
-  WEAPONS = 'WPN',
-  ENGINES = 'ENG'
+  BRIDGE = 'BRIDGE',
+  COMMS = 'COMMS',
+  NAVIGATION = 'NAVIGATION',
+  SENSORS = 'SENSORS',
+  WEAPONS = 'WEAPONS',
+  ENGINES = 'ENGINES'
 }

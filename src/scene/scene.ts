@@ -1,11 +1,12 @@
 import { BUTTON_GUTTER, BUTTON_HEIGHT, BUTTON_PER_ROW, BUTTON_WIDTH, HEIGHT, Rooms } from '../core/constants';
+import { Dialog } from '../ui/dialog';
 import { NavButton } from '../ui/nav-button';
-import { UIElement } from '../ui/ui-element';
+import { UI } from '../ui/ui';
 import { Room } from './room';
 
 export class Scene {
-  private mouseDown: {};
-  private ui: UIElement[] = [];
+  private ui: UI = new UI();
+  private dialog: Dialog = new Dialog();
   private room: Room;
   private rooms: Room[] = [
     new Room(Rooms.BRIDGE),
@@ -24,40 +25,35 @@ export class Scene {
   private changeRoom(room: Rooms) {
     this.room = this.rooms.find(r => r.room === room);
 
-    this.ui = this.ui.map(element => {
-      if (element?.['room']) {
-        element.setActive((<NavButton>element).room === room);
-      }
-      return element;
-    });
+    this.ui.setActive(element => element?.['room'] === room);
   }
 
   private createUI() {
     const buttons = this.rooms.map(r => r.room);
 
-    this.ui = buttons.map((key, index) => {
-      const rows = Math.floor(buttons.length / BUTTON_PER_ROW);
-      const row = Math.floor(index / BUTTON_PER_ROW);
-      const col = index % BUTTON_PER_ROW;
-      const startHeight = HEIGHT - (BUTTON_GUTTER + BUTTON_HEIGHT * rows) - BUTTON_GUTTER;
-      const l = (BUTTON_GUTTER + BUTTON_WIDTH) * col + BUTTON_GUTTER;
-      let t = startHeight + (BUTTON_HEIGHT + BUTTON_GUTTER) * row;
-      return new NavButton(l, t, BUTTON_WIDTH, BUTTON_HEIGHT, this.changeRoom.bind(this, key), index + 1, key);
-    });
+    this.ui.addElements([
+      ...buttons.map((key, index) => {
+        const rows = Math.floor(buttons.length / BUTTON_PER_ROW);
+        const row = Math.floor(index / BUTTON_PER_ROW);
+        const col = index % BUTTON_PER_ROW;
+        const startHeight = HEIGHT - (BUTTON_GUTTER + BUTTON_HEIGHT * rows) - BUTTON_GUTTER;
+        const l = (BUTTON_GUTTER + BUTTON_WIDTH) * col + BUTTON_GUTTER;
+        let t = startHeight + (BUTTON_HEIGHT + BUTTON_GUTTER) * row;
+        return new NavButton(l, t, BUTTON_WIDTH, BUTTON_HEIGHT, this.changeRoom.bind(this, key), index + 1, key);
+      })
+    ]);
   }
 
-  public onMouseMove(event: MouseEvent, scaleAmount: number) {
-    this.ui.map(element => {
-      element.checkHover(event, scaleAmount);
-    });
-    this.room.onMouseMove(event, scaleAmount);
+  public onMouseMove(event: MouseEvent, scale: number) {
+    this.ui.onMouseMove(event, scale);
+    this.room.onMouseMove(event, scale);
+    this.dialog.onMouseMove(event, scale);
   }
 
-  public onMouseClick(event: MouseEvent, scaleAmount: number) {
-    this.ui.map(element => {
-      element.checkClick(event, scaleAmount);
-    });
-    this.room.onMouseClick(event, scaleAmount);
+  public onMouseClick(event: MouseEvent, scale: number) {
+    this.ui.onMouseClick(event, scale);
+    this.room.onMouseClick(event, scale);
+    this.dialog.onMouseClick(event, scale);
   }
 
   public onKeyDown({ key }: KeyboardEvent) {
@@ -80,20 +76,37 @@ export class Scene {
       case '6':
         this.changeRoom(Rooms.ENGINES);
         break;
+      case 's':
+        this.dialog.startDialog(
+          {
+            messages: [
+              {
+                portrait: 'portrait-placeholder',
+                message: 'test string'
+              },
+              {
+                portrait: 'portrait-cat',
+                message: 'test string 2'
+              },
+              {
+                portrait: 'portrait-placeholder',
+                message: 'last test string'
+              }
+            ]
+          },
+          () => {}
+        );
+        break;
     }
   }
 
   public update(delta: number) {}
 
-  public draw(ctx: CanvasRenderingContext2D, scaleAmount: number) {
+  public draw(ctx: CanvasRenderingContext2D, scale: number) {
     ctx.save();
-
-    this.room.draw(ctx, scaleAmount);
-
-    this.ui.map(element => {
-      element.draw(ctx, scaleAmount);
-    });
-
+    this.room.draw(ctx, scale);
+    this.ui.draw(ctx, scale);
+    this.dialog.draw(ctx, scale);
     ctx.restore();
   }
 }
