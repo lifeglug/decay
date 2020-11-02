@@ -2,7 +2,6 @@ import { images } from './assets';
 
 export class Loader {
   public static loaded: boolean = false;
-  private static loadProgress: number = 0;
   private static assets: {
     images: { [key: string]: HTMLImageElement };
   } = {
@@ -18,26 +17,24 @@ export class Loader {
     this.queue.images = Object.assign({}, images);
   }
 
-  public static load() {
+  public static load(callback: () => void) {
     this.queueImages();
+    let loadProgress = 0;
+
+    const imageLoaded = () => {
+      loadProgress += 1;
+      if (loadProgress === Object.keys(this.queue.images).length) {
+        this.loaded = true;
+        callback();
+      }
+    };
 
     Object.keys(this.queue.images).map(key => {
       const img = new Image();
       img.src = this.queue.images[key];
-      img.onload = this.imageLoaded.bind(this);
+      img.onload = imageLoaded.bind(this);
       this.assets.images[key] = img;
     });
-  }
-
-  private static imageLoaded() {
-    this.loadProgress += 1;
-    if (this.loadProgress === Object.keys(this.queue.images).length) {
-      this.loadComplete();
-    }
-  }
-
-  private static loadComplete() {
-    this.loaded = true;
   }
 
   public static getImage(id: string): HTMLImageElement {

@@ -15,16 +15,17 @@ export class Game {
     this.ctx = this.canvas.getContext('2d');
     this.ctx.imageSmoothingEnabled = false;
     document.getElementById('viewport').appendChild(this.canvas);
+    this.resize();
 
     document.addEventListener('mousedown', this.onMouseClick.bind(this));
     document.addEventListener('mousemove', this.onMouseMove.bind(this));
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     window.addEventListener('resize', this.resize.bind(this));
 
-    Loader.load();
-
-    this.resize();
-    this.loop(0);
+    Loader.load(() => {
+      this.scene = new Scene();
+      this.loop(0);
+    });
   }
 
   private resize() {
@@ -34,16 +35,11 @@ export class Game {
   }
 
   private loop(timestamp: number) {
-    if (Loader.loaded) {
-      if (!this.scene) {
-        this.scene = new Scene();
-      }
-      const delta = timestamp - this.lastStep;
-      this.lastStep = timestamp;
+    const delta = timestamp - this.lastStep;
+    this.lastStep = timestamp;
 
-      this.update(delta);
-      this.draw();
-    }
+    this.update(delta);
+    this.draw();
 
     window.requestAnimationFrame(this.loop.bind(this));
   }

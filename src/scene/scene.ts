@@ -1,4 +1,5 @@
 import { BUTTON_GUTTER, BUTTON_HEIGHT, BUTTON_PER_ROW, BUTTON_WIDTH, HEIGHT, Rooms } from '../core/constants';
+import { Coordinator, EventType, TimedEvent } from '../core/coordinator';
 import { Dialog } from '../ui/dialog';
 import { NavButton } from '../ui/nav-button';
 import { UI } from '../ui/ui';
@@ -16,10 +17,45 @@ export class Scene {
     new Room(Rooms.WEAPONS),
     new Room(Rooms.ENGINES)
   ];
+  private coordinator: Coordinator = new Coordinator(this.fireEvent.bind(this));
 
   constructor() {
     this.createUI();
     this.changeRoom(Rooms.BRIDGE);
+    this.coordinator.start();
+  }
+
+  private fireEvent(event: TimedEvent) {
+    switch (event.type) {
+      case EventType.CORRUPTION:
+        this.corruptRoom(event.context.room, event.context.amount);
+        break;
+      case EventType.OFFLINE:
+        this.offlineRoom(event.context.room);
+        break;
+      case EventType.DIALOG:
+        this.coordinator.pause();
+        this.dialog.startDialog(event.context.id, () => {
+          this.coordinator.unpause();
+        });
+        break;
+    }
+  }
+
+  private corruptRoom(room: Rooms, amount: number) {
+    this.rooms.map(r => {
+      if (r.room === room) {
+        r.setCorruption(amount);
+      }
+    });
+  }
+
+  private offlineRoom(room: Rooms) {
+    this.rooms.map(r => {
+      if (r.room === room) {
+        r.setOnline(false);
+      }
+    });
   }
 
   private changeRoom(room: Rooms) {
@@ -76,31 +112,12 @@ export class Scene {
       case '6':
         this.changeRoom(Rooms.ENGINES);
         break;
-      case 's':
-        this.dialog.startDialog(
-          {
-            messages: [
-              {
-                portrait: 'portrait-placeholder',
-                message: 'test string'
-              },
-              {
-                portrait: 'portrait-cat',
-                message: 'test string 2'
-              },
-              {
-                portrait: 'portrait-placeholder',
-                message: 'last test string'
-              }
-            ]
-          },
-          () => {}
-        );
-        break;
     }
   }
 
-  public update(delta: number) {}
+  public update(delta: number) {
+    this.coordinator.update(delta);
+  }
 
   public draw(ctx: CanvasRenderingContext2D, scale: number) {
     ctx.save();

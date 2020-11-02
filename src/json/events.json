@@ -1,0 +1,24 @@
+[
+  {
+    "time": 5,
+    "type": "OFFLINE",
+    "context": {
+      "room": "BRIDGE"
+    }
+  },
+  {
+    "time": 5,
+    "type": "CORRUPTION",
+    "context": {
+      "room": "BRIDGE",
+      "amount": 3
+    }
+  },
+  {
+    "time": 0,
+    "type": "DIALOG",
+    "context": {
+      "id": "0"
+    }
+  }
+]

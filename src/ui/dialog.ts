@@ -4,21 +4,22 @@ import { Button } from './button';
 import { UI } from './ui';
 import { UIElement } from './ui-element';
 
-interface DialogTree {
-  messages: DialogMessage[];
-}
+import dialog from '../json/dialog.json';
+
+enum MessageEffect {}
 
 interface DialogMessage {
   portrait: string;
   message: string;
+  effect?: MessageEffect;
 }
 
 export class Dialog extends UIElement {
   private open: boolean = false;
-  private tree: DialogTree;
   private onClose: () => void;
   private ui: UI = new UI();
   private messageIndex: number = 0;
+  private messages: DialogMessage[];
   private portrait: HTMLImageElement;
   private message: DialogMessage;
 
@@ -28,9 +29,9 @@ export class Dialog extends UIElement {
 
   public checkClick(event: MouseEvent, scale: number) {}
 
-  public startDialog(tree: DialogTree, onClose: () => void) {
+  public startDialog(treeId: string, onClose: () => void) {
     this.open = true;
-    this.tree = tree;
+    this.messages = dialog[treeId];
     this.onClose = onClose;
     this.startNode(0);
   }
@@ -38,10 +39,10 @@ export class Dialog extends UIElement {
   public startNode(node: number) {
     this.ui.clearElements();
     this.messageIndex = node;
-    this.message = this.tree.messages[this.messageIndex];
+    this.message = this.messages[this.messageIndex];
     this.portrait = getPortraitImage(this.message?.portrait);
 
-    if (this.messageIndex < this.tree.messages.length - 1) {
+    if (this.messageIndex < this.messages.length - 1) {
       this.ui.addElements([
         new Button(
           WIDTH - 210,

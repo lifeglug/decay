@@ -1,5 +1,6 @@
 export const DEBUG = true;
 
+export const COORDINATOR_TICK = 1000;
 export const CORRUPTION_THRESHOLD = 2;
 
 export const WIDTH = 1280;
