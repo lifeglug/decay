@@ -1,9 +1,9 @@
 import bridgeOnlineUncorrupted from '../images/bridge-online-uncorrupted.png';
 import bridgeOfflineUncorrupted from '../images/bridge-offline-uncorrupted.png';
 import bridgeOfflineCorrupted from '../images/bridge-offline-corrupted.png';
-import commsOnlineUncorrupted from '../images/comms-online-uncorrupted.png';
-import commsOfflineUncorrupted from '../images/comms-offline-uncorrupted.png';
-import commsOfflineCorrupted from '../images/comms-offline-corrupted.png';
+import lifesupportOnlineUncorrupted from '../images/life_support-online-uncorrupted.png';
+import lifesupportOfflineUncorrupted from '../images/life_support-offline-uncorrupted.png';
+import lifesupportOfflineCorrupted from '../images/life_support-offline-corrupted.png';
 import enginesOnlineUncorrupted from '../images/engines-online-uncorrupted.png';
 import enginesOfflineUncorrupted from '../images/engines-offline-uncorrupted.png';
 import enginesOfflineCorrupted from '../images/engines-offline-corrupted.png';
@@ -21,9 +21,9 @@ export const images = {
   'bridge-online-uncorrupted': bridgeOnlineUncorrupted,
   'bridge-offline-uncorrupted': bridgeOfflineUncorrupted,
   'bridge-offline-corrupted': bridgeOfflineCorrupted,
-  'comms-online-uncorrupted': commsOnlineUncorrupted,
-  'comms-offline-uncorrupted': commsOfflineUncorrupted,
-  'comms-offline-corrupted': commsOfflineCorrupted,
+  'life_support-online-uncorrupted': lifesupportOnlineUncorrupted,
+  'life_support-offline-uncorrupted': lifesupportOfflineUncorrupted,
+  'life_support-offline-corrupted': lifesupportOfflineCorrupted,
   'engines-online-uncorrupted': enginesOnlineUncorrupted,
   'engines-offline-uncorrupted': enginesOfflineUncorrupted,
   'engines-offline-corrupted': enginesOfflineCorrupted,

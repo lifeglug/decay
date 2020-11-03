@@ -1,29 +1,50 @@
 import { AudioEngine } from '../core/audio-engine';
-import { BUTTON_GUTTER, BUTTON_HEIGHT, BUTTON_PER_ROW, BUTTON_WIDTH, HEIGHT, Rooms } from '../core/constants';
-import { Coordinator, EventType, TimedEvent } from '../core/coordinator';
+import {
+  AIR_MAX,
+  BUTTON_GUTTER,
+  BUTTON_HEIGHT,
+  BUTTON_PER_ROW,
+  BUTTON_WIDTH,
+  DISTANCE,
+  HEIGHT,
+  Rooms,
+  SPEED,
+  COORDINATOR_TICK,
+  AIR_CONSUMPTION,
+  Ending
+} from '../core/constants';
 import { Dialog } from '../ui/dialog';
 import { NavButton } from '../ui/nav-button';
 import { UI } from '../ui/ui';
-import { Room } from './room';
+import { Room } from '../rooms/room';
+import { LifeSupportRoom } from '../rooms/life-support-room';
+import { EventType, TimedEvent } from './models';
+
+import eventsJson from '../json/events.json';
+import { EngineRoom } from '../rooms/engine-room';
 
 export class Scene {
+  private air: number = AIR_MAX;
+  private distance: number = DISTANCE;
   private ui: UI = new UI();
   private dialog: Dialog = new Dialog();
   private room: Room;
-  private rooms: Room[] = [
-    new Room(Rooms.BRIDGE),
-    new Room(Rooms.COMMS),
-    new Room(Rooms.NAVIGATION),
-    new Room(Rooms.SENSORS),
-    new Room(Rooms.WEAPONS),
-    new Room(Rooms.ENGINES)
-  ];
-  private coordinator: Coordinator = new Coordinator(this.fireEvent.bind(this));
+  private rooms: { [key: string]: Room } = {
+    [Rooms.BRIDGE]: new Room(Rooms.BRIDGE),
+    [Rooms.NAVIGATION]: new Room(Rooms.NAVIGATION),
+    [Rooms.SENSORS]: new Room(Rooms.SENSORS),
+    [Rooms.WEAPONS]: new Room(Rooms.WEAPONS),
+    [Rooms.LIFE_SUPPORT]: new LifeSupportRoom(() => this.air),
+    [Rooms.ENGINES]: new EngineRoom(() => this.distance)
+  };
+  private running: boolean = true;
+  private events: TimedEvent[] = [...eventsJson];
+  private timestamp: number = 0;
+  private step: number = 0;
 
   constructor() {
     this.createUI();
     this.changeRoom(Rooms.BRIDGE);
-    this.coordinator.start();
   }
 
   private fireEvent(event: TimedEvent) {
@@ -35,38 +56,32 @@ export class Scene {
         this.offlineRoom(event.context.room);
         break;
       case EventType.DIALOG:
-        this.coordinator.pause();
+        this.running = false;
         this.dialog.startDialog(event.context.id, () => {
-          this.coordinator.unpause();
+          this.running = true;
         });
         break;
     }
   }
 
   private corruptRoom(room: Rooms, amount: number) {
-    this.rooms.map(r => {
-      if (r.room === room) {
-        r.setCorruption(amount);
-      }
-    });
+    this.rooms[room].setCorruption(amount);
   }
 
   private offlineRoom(room: Rooms) {
-    this.rooms.map(r => {
-      if (r.room === room) {
-        r.setOnline(false);
-      }
-    });
+    this.rooms[room].setOnline(false);
   }
 
   private changeRoom(room: Rooms) {
-    this.room = this.rooms.find(r => r.room === room);
+    this.room?.exitRoom();
+    this.room = this.rooms[room];
+    this.room.enterRoom();
 
     this.ui.setActive(element => element?.['room'] === room);
   }
 
   private createUI() {
-    const buttons = this.rooms.map(r => r.room);
+    const buttons = Object.keys(this.rooms) as Rooms[];
 
     this.ui.addElements([
       ...buttons.map((key, index) => {
@@ -81,46 +96,94 @@ export class Scene {
     ]);
   }
 
+  private endGame(ending: Ending) {
+    this.running = false;
+    console.log(ending);
+  }
+
   public onMouseMove(event: MouseEvent, scale: number) {
-    this.ui.onMouseMove(event, scale);
-    this.room.onMouseMove(event, scale);
+    if (this.running) {
+      this.ui.onMouseMove(event, scale);
+      this.room.onMouseMove(event, scale);
+    }
     this.dialog.onMouseMove(event, scale);
   }
 
   public onMouseClick(event: MouseEvent, scale: number) {
-    this.ui.onMouseClick(event, scale);
-    this.room.onMouseClick(event, scale);
+    if (this.running) {
+      this.ui.onMouseClick(event, scale);
+      this.room.onMouseClick(event, scale);
+    }
     this.dialog.onMouseClick(event, scale);
   }
 
   public onKeyDown({ key }: KeyboardEvent) {
-    switch (key.toLocaleLowerCase()) {
-      case 'm':
-        AudioEngine.toggleMute();
-        break;
-      case '1':
-        this.changeRoom(Rooms.BRIDGE);
-        break;
-      case '2':
-        this.changeRoom(Rooms.COMMS);
-        break;
-      case '3':
-        this.changeRoom(Rooms.NAVIGATION);
-        break;
-      case '4':
-        this.changeRoom(Rooms.SENSORS);
-        break;
-      case '5':
-        this.changeRoom(Rooms.WEAPONS);
-        break;
-      case '6':
-        this.changeRoom(Rooms.ENGINES);
-        break;
+    if (this.running) {
+      switch (key.toLocaleLowerCase()) {
+        case 'm':
+          AudioEngine.toggleMute();
+          break;
+        case '1':
+          this.changeRoom(Rooms.BRIDGE);
+          break;
+        case '2':
+          this.changeRoom(Rooms.NAVIGATION);
+          break;
+        case '3':
+          this.changeRoom(Rooms.SENSORS);
+          break;
+        case '4':
+          this.changeRoom(Rooms.WEAPONS);
+          break;
+        case '5':
+          this.changeRoom(Rooms.LIFE_SUPPORT);
+          break;
+        case '6':
+          this.changeRoom(Rooms.ENGINES);
+          break;
+      }
     }
   }
 
   public update(delta: number) {
-    this.coordinator.update(delta);
+    this.ui.update(delta);
+
+    if (this.running) {
+      if (this.timestamp >= COORDINATOR_TICK) {
+        this.timestamp = 0;
+        this.step += 1;
+        this.tick();
+      }
+
+      this.room.update(delta);
+
+      this.timestamp += delta;
+    }
+  }
+
+  private tick() {
+    this.events = this.events.filter(event => {
+      if (this.step >= event.time) {
+        this.fireEvent(event);
+      }
+      return event.time > this.step;
+    });
+
+    if (!this.rooms[Rooms.LIFE_SUPPORT].isOnline()) {
+      this.air -= AIR_CONSUMPTION;
+    }
+
+    if (this.rooms[Rooms.ENGINES].isOnline()) {
+      this.distance -= SPEED;
+    }
+
+    if (this.air <= 0) {
+      this.endGame(Ending.NO_AIR);
+    }
+
+    if (this.distance <= 0) {
+      this.endGame(Ending.REACHED_DESTINATION);
+    }
   }
 
   public draw(ctx: CanvasRenderingContext2D, scale: number) {

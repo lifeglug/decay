@@ -25,6 +25,10 @@ export class UI {
     });
   }
 
+  public update(delta: number) {
+    this.elements.map(element => element.update(delta));
+  }
+
   public draw(ctx: CanvasRenderingContext2D, scale: number) {
     this.elements.map(element => {
       element.draw(ctx, scale);

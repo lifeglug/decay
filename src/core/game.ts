@@ -45,19 +45,27 @@ export class Game {
   }
 
   private onMouseMove(event: MouseEvent) {
-    this.scene.onMouseMove(event, this.scale);
+    if (this.scene) {
+      this.scene.onMouseMove(event, this.scale);
+    }
   }
 
   private onMouseClick(event: MouseEvent) {
-    this.scene.onMouseClick(event, this.scale);
+    if (this.scene) {
+      this.scene.onMouseClick(event, this.scale);
+    }
   }
 
   private onKeyDown(event: KeyboardEvent) {
-    this.scene.onKeyDown(event);
+    if (this.scene) {
+      this.scene.onKeyDown(event);
+    }
   }
 
   private update(delta: number) {
-    this.scene.update(delta);
+    if (this.scene) {
+      this.scene.update(delta);
+    }
   }
 
   private draw() {
@@ -66,6 +74,8 @@ export class Game {
     this.ctx.fillStyle = 'white';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.scene.draw(this.ctx, this.scale);
+    if (this.scene) {
+      this.scene.draw(this.ctx, this.scale);
+    }
   }
 }
