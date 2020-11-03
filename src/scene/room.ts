@@ -11,18 +11,11 @@ export class Room {
 
   constructor(public room: Rooms) {
     this.updateRoomImage();
-    this.ui.addElements([
-      new Hotspot(129, 160, 320, 70, this.powerClick.bind(this)),
-      new Hotspot(129, 250, 400, 70, this.corruptionClick.bind(this))
-    ]);
+    this.ui.addElements([new Hotspot(129, 160, 320, 70, this.powerClick.bind(this))]);
   }
 
   private powerClick() {
     this.setOnline(!this.online);
-  }
-
-  private corruptionClick() {
-    this.setCorruption(this.corruption === 0 ? 5 : 0);
   }
 
   private updateRoomImage() {

@@ -39,3 +39,9 @@ export const images = {
   'portrait-cat': 'https://placekitten.com/200/300',
   'portrait-placeholder': 'https://via.placeholder.com/150x150'
 };
+
+import rumble from '../sound/rumble.wav';
+
+export const sounds = {
+  rumble: rumble
+};

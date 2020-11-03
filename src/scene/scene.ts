@@ -1,3 +1,4 @@
+import { AudioEngine } from '../core/audio-engine';
 import { BUTTON_GUTTER, BUTTON_HEIGHT, BUTTON_PER_ROW, BUTTON_WIDTH, HEIGHT, Rooms } from '../core/constants';
 import { Coordinator, EventType, TimedEvent } from '../core/coordinator';
 import { Dialog } from '../ui/dialog';
@@ -94,6 +95,9 @@ export class Scene {
 
   public onKeyDown({ key }: KeyboardEvent) {
     switch (key.toLocaleLowerCase()) {
+      case 'm':
+        AudioEngine.toggleMute();
+        break;
       case '1':
         this.changeRoom(Rooms.BRIDGE);
         break;
