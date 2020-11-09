@@ -13,9 +13,9 @@ import navigationOfflineCorrupted from '../images/navigation-offline-corrupted.p
 import sensorsOnlineUncorrupted from '../images/sensors-online-uncorrupted.png';
 import sensorsOfflineUncorrupted from '../images/sensors-offline-uncorrupted.png';
 import sensorsOfflineCorrupted from '../images/sensors-offline-corrupted.png';
-import weaponsOnlineUncorrupted from '../images/weapons-online-uncorrupted.png';
-import weaponsOfflineUncorrupted from '../images/weapons-offline-uncorrupted.png';
-import weaponsOfflineCorrupted from '../images/weapons-offline-corrupted.png';
+import powerOnlineUncorrupted from '../images/power-online-uncorrupted.png';
+import powerOfflineUncorrupted from '../images/power-offline-uncorrupted.png';
+import powerOfflineCorrupted from '../images/power-offline-corrupted.png';
 
 export const images = {
   'bridge-online-uncorrupted': bridgeOnlineUncorrupted,
@@ -33,9 +33,9 @@ export const images = {
   'sensors-online-uncorrupted': sensorsOnlineUncorrupted,
   'sensors-offline-uncorrupted': sensorsOfflineUncorrupted,
   'sensors-offline-corrupted': sensorsOfflineCorrupted,
-  'weapons-online-uncorrupted': weaponsOnlineUncorrupted,
-  'weapons-offline-uncorrupted': weaponsOfflineUncorrupted,
-  'weapons-offline-corrupted': weaponsOfflineCorrupted,
+  'power-online-uncorrupted': powerOnlineUncorrupted,
+  'power-offline-uncorrupted': powerOfflineUncorrupted,
+  'power-offline-corrupted': powerOfflineCorrupted,
   'portrait-cat': 'https://placekitten.com/200/300',
   'portrait-placeholder': 'https://via.placeholder.com/150x150'
 };

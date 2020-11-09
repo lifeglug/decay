@@ -1,12 +1,15 @@
-import { Rooms } from './constants';
+import { Keys, Rooms } from './constants';
 
 export const translations: { [key: string]: string } = {
-  [`nav-${Rooms.BRIDGE}`]: '1. BRDG',
-  [`nav-${Rooms.NAVIGATION}`]: '2. NAV',
-  [`nav-${Rooms.SENSORS}`]: '3. SNSR',
-  [`nav-${Rooms.WEAPONS}`]: '4. WPN',
-  [`nav-${Rooms.LIFE_SUPPORT}`]: '5. LSUP',
-  [`nav-${Rooms.ENGINES}`]: '6. ENG'
+  [`nav-${Rooms.BRIDGE}`]: `${Keys.BRIDGE}. BRDG`,
+  [`nav-${Rooms.NAVIGATION}`]: `${Keys.NAVIGATION}. NAV`,
+  [`nav-${Rooms.SENSORS}`]: `${Keys.SENSORS}. SNSR`,
+  [`nav-${Rooms.POWER}`]: `${Keys.POWER}. PWR`,
+  [`nav-${Rooms.LIFE_SUPPORT}`]: `${Keys.LIFE_SUPPORT}. LSUP`,
+  [`nav-${Rooms.ENGINES}`]: `${Keys.ENGINES}. ENG`,
+  'status-power': 'PWR: ',
+  'status-air': 'AIR: ',
+  'status-distance': 'DST: '
 };
 
 export const _ = (id: string) => {

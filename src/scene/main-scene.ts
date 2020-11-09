@@ -11,31 +11,43 @@ import {
   SPEED,
   COORDINATOR_TICK,
   AIR_CONSUMPTION,
-  Ending
+  Ending,
+  POWER_MAX,
+  Keys,
+  AIR_CHARGE,
+  POWER_CONSUMPTION,
+  POWER_CHARGE
 } from '../core/constants';
 import { Dialog } from '../ui/dialog';
 import { NavButton } from '../ui/nav-button';
 import { Room } from '../rooms/room';
 import { LifeSupportRoom } from '../rooms/life-support-room';
 import { EventType, TimedEvent } from '../core/models';
-import { EngineRoom } from '../rooms/engine-room';
+import { NavRoom } from '../rooms/nav-room';
 import { Scene } from './scene';
-
-import eventsJson from '../json/events.json';
+import { EngineRoom } from '../rooms/engine-room';
+import { BridgeRoom } from '../rooms/bridge-room';
+import { PowerRoom } from '../rooms/power-room';
+import { SensorsRoom } from '../rooms/sensors-room';
 import { Game } from '../core/game';
 
+import eventsJson from '../json/events.json';
+import { clamp } from '../core/util';
+import { Status } from '../ui/status';
+
 export class MainScene extends Scene {
+  private power: number = POWER_MAX;
   private air: number = AIR_MAX;
   private distance: number = DISTANCE;
   private dialog: Dialog = new Dialog();
   private room: Room;
   private rooms: { [key: string]: Room } = {
-    [Rooms.BRIDGE]: new Room(Rooms.BRIDGE),
-    [Rooms.NAVIGATION]: new Room(Rooms.NAVIGATION),
-    [Rooms.SENSORS]: new Room(Rooms.SENSORS),
-    [Rooms.WEAPONS]: new Room(Rooms.WEAPONS),
-    [Rooms.LIFE_SUPPORT]: new LifeSupportRoom(() => this.air),
-    [Rooms.ENGINES]: new EngineRoom(() => this.distance)
+    [Rooms.BRIDGE]: new BridgeRoom(),
+    [Rooms.NAVIGATION]: new NavRoom(),
+    [Rooms.SENSORS]: new SensorsRoom(),
+    [Rooms.POWER]: new PowerRoom(),
+    [Rooms.LIFE_SUPPORT]: new LifeSupportRoom(),
+    [Rooms.ENGINES]: new EngineRoom()
   };
   private events: TimedEvent[] = [...eventsJson];
   private timestamp: number = 0;
@@ -53,6 +65,7 @@ export class MainScene extends Scene {
         this.corruptRoom(event.context.room, event.context.amount);
         break;
       case EventType.RANDOM:
+        this.randomEvent(event.context.type, event.context.chance);
         break;
       case EventType.OFFLINE:
         this.offlineRoom(event.context.room);
@@ -64,6 +77,10 @@ export class MainScene extends Scene {
         });
         break;
     }
+  }
+
+  private randomEvent(type: EventType, chance: number) {
+    console.log(type, chance);
   }
 
   private corruptRoom(room: Rooms, amount: number) {
@@ -94,7 +111,8 @@ export class MainScene extends Scene {
         const l = (BUTTON_GUTTER + BUTTON_WIDTH) * col + BUTTON_GUTTER;
         let t = startHeight + (BUTTON_HEIGHT + BUTTON_GUTTER) * row;
         return new NavButton(l, t, BUTTON_WIDTH, BUTTON_HEIGHT, this.changeRoom.bind(this, key), index + 1, key);
-      })
+      }),
+      new Status(() => [this.power, this.air, this.distance])
     ]);
   }
 
@@ -122,25 +140,25 @@ export class MainScene extends Scene {
   public onKeyDown({ key }: KeyboardEvent) {
     if (this.running) {
       switch (key.toLocaleLowerCase()) {
-        case 'm':
+        case Keys.MUTE:
           AudioEngine.toggleMute();
           break;
-        case '1':
+        case Keys.BRIDGE:
           this.changeRoom(Rooms.BRIDGE);
           break;
-        case '2':
+        case Keys.NAVIGATION:
           this.changeRoom(Rooms.NAVIGATION);
           break;
-        case '3':
+        case Keys.SENSORS:
           this.changeRoom(Rooms.SENSORS);
           break;
-        case '4':
-          this.changeRoom(Rooms.WEAPONS);
-          break;
-        case '5':
+        case Keys.LIFE_SUPPORT:
           this.changeRoom(Rooms.LIFE_SUPPORT);
           break;
-        case '6':
+        case Keys.POWER:
+          this.changeRoom(Rooms.POWER);
+          break;
+        case Keys.ENGINES:
           this.changeRoom(Rooms.ENGINES);
           break;
       }
@@ -164,6 +182,8 @@ export class MainScene extends Scene {
   }
 
   private tick() {
+    this.ui.tick();
+
     this.events = this.events.filter(event => {
       if (this.step >= event.time) {
         this.fireEvent(event);
@@ -171,11 +191,21 @@ export class MainScene extends Scene {
       return event.time === null || event.time > this.step;
     });
 
-    if (!this.rooms[Rooms.LIFE_SUPPORT].isOnline()) {
-      this.air -= AIR_CONSUMPTION;
+    if (!this.rooms[Rooms.POWER].isOnline()) {
+      this.power = clamp(this.power - POWER_CONSUMPTION, 0, POWER_MAX);
+    } else {
+      this.power = clamp(this.power + POWER_CHARGE, 0, POWER_MAX);
     }
 
-    if (this.rooms[Rooms.ENGINES].isOnline()) {
+    const hasPower = this.power > 0;
+
+    if (!hasPower || !this.rooms[Rooms.LIFE_SUPPORT].isOnline()) {
+      this.air = clamp(this.air - AIR_CONSUMPTION, 0, AIR_MAX);
+    } else {
+      this.air = clamp(this.air + AIR_CHARGE, 0, AIR_MAX);
+    }
+
+    if (hasPower && this.rooms[Rooms.ENGINES].isOnline()) {
       this.distance -= SPEED;
     }
 

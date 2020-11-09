@@ -20,5 +20,40 @@
     "context": {
       "room": "BRIDGE"
     }
+  },
+  {
+    "time": 10,
+    "type": "OFFLINE",
+    "context": {
+      "room": "POWER"
+    }
+  },
+  {
+    "time": 10,
+    "type": "OFFLINE",
+    "context": {
+      "room": "ENGINES"
+    }
+  },
+  {
+    "time": 10,
+    "type": "OFFLINE",
+    "context": {
+      "room": "NAVIGATION"
+    }
+  },
+  {
+    "time": 10,
+    "type": "OFFLINE",
+    "context": {
+      "room": "SENSORS"
+    }
+  },
+  {
+    "time": 10,
+    "type": "OFFLINE",
+    "context": {
+      "room": "LIFE_SUPPORT"
+    }
   }
 ]

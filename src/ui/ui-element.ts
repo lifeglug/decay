@@ -12,6 +12,8 @@ export class UIElement {
 
   public update(delta: number) {}
 
+  public tick() {}
+
   public draw(ctx: CanvasRenderingContext2D, scale: number) {}
 
   public setActive(active: boolean) {

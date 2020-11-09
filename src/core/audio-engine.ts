@@ -34,7 +34,7 @@ export class AudioEngine {
 
   public static mute() {
     this.bg.muted = this.muted = true;
-    this.src.stop();
+    this.src?.stop();
   }
 
   public static unmute() {

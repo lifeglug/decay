@@ -2,12 +2,12 @@ import { Rooms } from '../core/constants';
 import { Hotspot } from '../ui/hotspot';
 import { Room } from './room';
 
-export class EngineRoom extends Room {
+export class NavRoom extends Room {
   constructor() {
-    super(Rooms.ENGINES);
+    super(Rooms.NAVIGATION);
   }
 
   public enterRoom() {
-    this.ui.addElements([new Hotspot(997, 322, 86, 80, this.powerClick.bind(this))]);
+    this.ui.addElements([new Hotspot(963, 255, 55, 50, this.powerClick.bind(this))]);
   }
 }
