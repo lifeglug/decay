@@ -40,6 +40,7 @@ export class Dialog extends UIElement {
     this.ui.clearElements();
     this.messageIndex = node;
     this.message = this.messages[this.messageIndex];
+    console.log(this.message);
     this.portrait = getPortraitImage(this.message?.portrait);
 
     if (this.messageIndex < this.messages.length - 1) {
@@ -91,7 +92,9 @@ export class Dialog extends UIElement {
         ctx.fillStyle = 'black';
         ctx.font = `${20 * scale}px monospace`;
         ctx.textBaseline = 'top';
-        ctx.fillText(this.message.message, 120 * scale, 320 * scale);
+        this.message.message.split('\n').map((line, i) => {
+          ctx.fillText(line, 120 * scale, (320 + i * 22) * scale);
+        });
       }
 
       this.ui.draw(ctx, scale);

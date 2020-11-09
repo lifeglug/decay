@@ -1,0 +1,3 @@
+*:RANDOM:chance=100,type=OFFLINE
+0:DIALOG:id=__test
+10:OFFLINE:room=BRIDGE

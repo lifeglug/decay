@@ -2,15 +2,15 @@
   "__test": [
     {
       "portrait": "portrait-cat",
-      "messages": "Hello there, I am a line of dialog.\nI am a second line of dialog in the same message."
+      "message": "Hello there, I am a line of dialog.\nI am a second line of dialog in the same message."
     },
     {
       "portrait": "portrait-cat",
-      "messages": "I am a third line of dialog, but in it's own message now."
+      "message": "I am a third line of dialog, but in it's own message now."
     },
     {
       "portrait": "portrait-placeholder",
-      "messages": "Whatever."
+      "message": "Whatever."
     }
   ]
 }

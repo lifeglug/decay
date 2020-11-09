@@ -47,7 +47,7 @@ function parseDialogFile(buffer) {
 function buildMessage(portrait, messages) {
   return {
     portrait,
-    messages: messages.join('\n')
+    message: messages.join('\n')
   };
 }
 

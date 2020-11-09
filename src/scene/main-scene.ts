@@ -17,7 +17,7 @@ import { Dialog } from '../ui/dialog';
 import { NavButton } from '../ui/nav-button';
 import { Room } from '../rooms/room';
 import { LifeSupportRoom } from '../rooms/life-support-room';
-import { EventType, TimedEvent } from './models';
+import { EventType, TimedEvent } from '../core/models';
 import { EngineRoom } from '../rooms/engine-room';
 import { Scene } from './scene';
 
@@ -51,6 +51,8 @@ export class MainScene extends Scene {
     switch (event.type) {
       case EventType.CORRUPTION:
         this.corruptRoom(event.context.room, event.context.amount);
+        break;
+      case EventType.RANDOM:
         break;
       case EventType.OFFLINE:
         this.offlineRoom(event.context.room);
@@ -166,7 +168,7 @@ export class MainScene extends Scene {
       if (this.step >= event.time) {
         this.fireEvent(event);
       }
-      return event.time > this.step;
+      return event.time === null || event.time > this.step;
     });
 
     if (!this.rooms[Rooms.LIFE_SUPPORT].isOnline()) {

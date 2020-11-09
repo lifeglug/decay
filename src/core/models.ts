@@ -1,7 +1,8 @@
 export enum EventType {
   OFFLINE = 'OFFLINE',
   CORRUPTION = 'CORRUPTION',
-  DIALOG = 'DIALOG'
+  DIALOG = 'DIALOG',
+  RANDOM = 'RANDOM'
 }
 
 export interface TimedEvent {

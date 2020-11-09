@@ -1,2 +1,24 @@
 [
+  {
+    "time": null,
+    "type": "RANDOM",
+    "context": {
+      "chance": "100",
+      "type": "OFFLINE"
+    }
+  },
+  {
+    "time": 0,
+    "type": "DIALOG",
+    "context": {
+      "id": "__test"
+    }
+  },
+  {
+    "time": 10,
+    "type": "OFFLINE",
+    "context": {
+      "room": "BRIDGE"
+    }
+  }
 ]

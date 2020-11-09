@@ -6,6 +6,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "build-json": "yarn build-events && yarn build-dialog",
+    "build-events": "./scripts/build-events.js",
     "build-dialog": "./scripts/build-dialog.js",
     "start": "webpack-dev-server",
     "build": "webpack"
