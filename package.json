@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "build-dialog": "./scripts/build-dialog.js",
     "start": "webpack-dev-server",
     "build": "webpack"
   },

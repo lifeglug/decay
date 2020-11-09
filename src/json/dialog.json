@@ -1,6 +1,16 @@
 {
-  "0": [{
-    "message": "Test message 1",
-    "portrait": "portrait-cat"
-  }]
+  "__test": [
+    {
+      "portrait": "portrait-cat",
+      "messages": "Hello there, I am a line of dialog.\nI am a second line of dialog in the same message."
+    },
+    {
+      "portrait": "portrait-cat",
+      "messages": "I am a third line of dialog, but in it's own message now."
+    },
+    {
+      "portrait": "portrait-placeholder",
+      "messages": "Whatever."
+    }
+  ]
 }

@@ -1,3 +1,4 @@
+import { MenuScene } from '../scene/menu-scene';
 import { Scene } from '../scene/scene';
 import { WIDTH } from './constants';
 import { Loader } from './loader';
@@ -23,9 +24,13 @@ export class Game {
     window.addEventListener('resize', this.resize.bind(this));
 
     Loader.load(() => {
-      this.scene = new Scene();
+      this.changeScene(new MenuScene(this));
       this.loop(0);
     });
+  }
+
+  public changeScene(scene: Scene) {
+    this.scene = scene;
   }
 
   private resize() {

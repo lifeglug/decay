@@ -1,0 +1,8 @@
+set-portrait cat
+Hello there, I am a line of dialog.
+I am a second line of dialog in the same message.
+
+I am a third line of dialog, but in it's own message now.
+
+set-portrait placeholder
+Whatever.
