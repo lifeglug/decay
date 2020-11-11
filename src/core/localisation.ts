@@ -9,7 +9,9 @@ export const translations: { [key: string]: string } = {
   [`nav-${Rooms.ENGINES}`]: `${Keys.ENGINES}. ENG`,
   'status-power': 'PWR: ',
   'status-air': 'AIR: ',
-  'status-distance': 'DST: '
+  'status-distance': 'DST: ',
+  'dialog-next': '>>>.',
+  'dialog-end': 'END.'
 };
 
 export const _ = (id: string) => {

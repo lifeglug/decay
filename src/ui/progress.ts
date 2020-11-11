@@ -32,7 +32,7 @@ export class Progress extends UIElement {
     if (this.label) {
       ctx.textBaseline = 'middle';
       ctx.fillStyle = 'black';
-      ctx.font = `${12 * scale}px monospace`;
+      ctx.font = `${6 * scale}px 'Press Start 2P'`;
       ctx.fillText(
         `${this.label}: ${this.current} / ${this.max}`,
         (this.x + 10) * scale,

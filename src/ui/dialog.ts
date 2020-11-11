@@ -1,8 +1,9 @@
-import { BUTTON_HEIGHT, BUTTON_WIDTH, WIDTH } from '../core/constants';
+import { WIDTH } from '../core/constants';
 import { getPortraitImage } from '../core/util';
 import { Button } from './button';
 import { UI } from './ui';
 import { UIElement } from './ui-element';
+import { _ } from '../core/localisation';
 
 import dialog from '../json/dialog.json';
 
@@ -24,7 +25,7 @@ export class Dialog extends UIElement {
   private message: DialogMessage;
 
   constructor() {
-    super(100, 200, WIDTH - 200, 320, () => {});
+    super(50, 100, WIDTH - 100, 160, () => {});
   }
 
   public checkClick(event: MouseEvent, scale: number) {}
@@ -40,24 +41,14 @@ export class Dialog extends UIElement {
     this.ui.clearElements();
     this.messageIndex = node;
     this.message = this.messages[this.messageIndex];
-    console.log(this.message);
     this.portrait = getPortraitImage(this.message?.portrait);
 
     if (this.messageIndex < this.messages.length - 1) {
       this.ui.addElements([
-        new Button(
-          WIDTH - 210,
-          470,
-          BUTTON_WIDTH,
-          BUTTON_HEIGHT,
-          this.startNode.bind(this, this.messageIndex + 1),
-          'NXT.'
-        )
+        new Button(WIDTH - 105, 235, 64, 16, this.startNode.bind(this, this.messageIndex + 1), _('dialog-next'))
       ]);
     } else {
-      this.ui.addElements([
-        new Button(WIDTH - 210, 470, BUTTON_WIDTH, BUTTON_HEIGHT, this.endDialog.bind(this), 'END.')
-      ]);
+      this.ui.addElements([new Button(WIDTH - 105, 235, 64, 16, this.endDialog.bind(this), _('dialog-end'))]);
     }
   }
 
@@ -84,13 +75,13 @@ export class Dialog extends UIElement {
       ctx.strokeRect(this.x * scale, this.y * scale, this.width * scale, this.height * scale);
 
       if (this.portrait) {
-        ctx.drawImage(this.portrait, 120 * scale, 150 * scale, 150 * scale, 150 * scale);
-        ctx.strokeRect(120 * scale, 150 * scale, 150 * scale, 150 * scale);
+        ctx.drawImage(this.portrait, 60 * scale, 75 * scale, 150 * scale, 150 * scale);
+        ctx.strokeRect(60 * scale, 75 * scale, 150 * scale, 150 * scale);
       }
 
       if (this.message) {
         ctx.fillStyle = 'black';
-        ctx.font = `${20 * scale}px monospace`;
+        ctx.font = `${10 * scale}px 'Press Start 2P'`;
         ctx.textBaseline = 'top';
         this.message.message.split('\n').map((line, i) => {
           ctx.fillText(line, 120 * scale, (320 + i * 22) * scale);

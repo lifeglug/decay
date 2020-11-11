@@ -8,6 +8,6 @@ export class BridgeRoom extends Room {
   }
 
   public enterRoom() {
-    this.ui.addElements([new Hotspot(634, 478, 94, 59, this.powerClick.bind(this))]);
+    this.ui.addElements([new Hotspot(317, 239, 47, 29, this.powerClick.bind(this))]);
   }
 }

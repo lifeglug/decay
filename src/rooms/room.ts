@@ -14,7 +14,7 @@ export class Room {
   }
 
   public enterRoom() {
-    this.ui.addElements([new Hotspot(129, 160, 320, 70, this.powerClick.bind(this))]);
+    this.ui.addElements([new Hotspot(64, 80, 160, 35, this.powerClick.bind(this))]);
   }
 
   public exitRoom() {}

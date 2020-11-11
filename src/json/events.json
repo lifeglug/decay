@@ -8,52 +8,17 @@
     }
   },
   {
-    "time": 0,
+    "time": 1,
     "type": "DIALOG",
     "context": {
-      "id": "__test"
+      "id": "00"
     }
   },
   {
-    "time": 10,
-    "type": "OFFLINE",
+    "time": 2,
+    "type": "DIALOG",
     "context": {
-      "room": "BRIDGE"
-    }
-  },
-  {
-    "time": 10,
-    "type": "OFFLINE",
-    "context": {
-      "room": "POWER"
-    }
-  },
-  {
-    "time": 10,
-    "type": "OFFLINE",
-    "context": {
-      "room": "ENGINES"
-    }
-  },
-  {
-    "time": 10,
-    "type": "OFFLINE",
-    "context": {
-      "room": "NAVIGATION"
-    }
-  },
-  {
-    "time": 10,
-    "type": "OFFLINE",
-    "context": {
-      "room": "SENSORS"
-    }
-  },
-  {
-    "time": 10,
-    "type": "OFFLINE",
-    "context": {
-      "room": "LIFE_SUPPORT"
+      "id": "10"
     }
   }
 ]

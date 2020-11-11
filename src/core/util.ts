@@ -1,3 +1,4 @@
+import { Room } from '../rooms/room';
 import { CORRUPTION_THRESHOLD, Rooms } from './constants';
 import { Loader } from './loader';
 
@@ -11,6 +12,13 @@ export const getRoomImage = (room: Rooms, active: boolean, corruption: number): 
 
 export const getPortraitImage = (id: string): HTMLImageElement => {
   return Loader.getImage(id);
+};
+
+export const getNavImages = (room: Rooms): HTMLImageElement[] => {
+  return [
+    Loader.getImage(`nav-${room.toLocaleLowerCase()}`),
+    Loader.getImage(`nav-${room.toLocaleLowerCase()}-active`)
+  ];
 };
 
 export const clamp = (value: number, min: number, max: number) => {

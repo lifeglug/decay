@@ -8,6 +8,6 @@ export class EngineRoom extends Room {
   }
 
   public enterRoom() {
-    this.ui.addElements([new Hotspot(997, 322, 86, 80, this.powerClick.bind(this))]);
+    this.ui.addElements([new Hotspot(498, 162, 43, 40, this.powerClick.bind(this))]);
   }
 }

@@ -8,6 +8,6 @@ export class SensorsRoom extends Room {
   }
 
   public enterRoom() {
-    this.ui.addElements([new Hotspot(1131, 462, 72, 73, this.powerClick.bind(this))]);
+    this.ui.addElements([new Hotspot(565, 231, 36, 36, this.powerClick.bind(this))]);
   }
 }

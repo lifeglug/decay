@@ -1,4 +1,3 @@
-import { Rooms } from '../core/constants';
 import { UIElement } from './ui-element';
 
 export class Button extends UIElement {
@@ -17,7 +16,7 @@ export class Button extends UIElement {
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = 'black';
-    ctx.font = `${12 * scale}px monospace`;
+    ctx.font = `${6 * scale}px 'Press Start 2P'`;
     ctx.fillText(this.label, (this.x + this.width / 2) * scale, (this.y + this.height / 2) * scale);
     ctx.restore();
   }

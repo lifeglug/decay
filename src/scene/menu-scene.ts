@@ -8,10 +8,10 @@ export class MenuScene extends Scene {
     super(game);
     this.ui.addElements([
       new Button(
-        10,
-        10,
-        100,
-        100,
+        5,
+        5,
+        50,
+        50,
         () => {
           game.changeScene(new MainScene(game));
         },

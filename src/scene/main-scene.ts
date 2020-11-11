@@ -1,12 +1,7 @@
 import { AudioEngine } from '../core/audio-engine';
 import {
   AIR_MAX,
-  BUTTON_GUTTER,
-  BUTTON_HEIGHT,
-  BUTTON_PER_ROW,
-  BUTTON_WIDTH,
   DISTANCE,
-  HEIGHT,
   Rooms,
   SPEED,
   COORDINATOR_TICK,
@@ -30,10 +25,12 @@ import { BridgeRoom } from '../rooms/bridge-room';
 import { PowerRoom } from '../rooms/power-room';
 import { SensorsRoom } from '../rooms/sensors-room';
 import { Game } from '../core/game';
-
-import eventsJson from '../json/events.json';
 import { clamp } from '../core/util';
 import { Status } from '../ui/status';
+
+import eventsJson from '../json/events.json';
+import { UIImage } from '../ui/ui-image';
+import { Minimap } from '../ui/minimap';
 
 export class MainScene extends Scene {
   private power: number = POWER_MAX;
@@ -100,19 +97,16 @@ export class MainScene extends Scene {
   }
 
   private createUI() {
-    const buttons = Object.keys(this.rooms) as Rooms[];
-
     this.ui.addElements([
-      ...buttons.map((key, index) => {
-        const rows = Math.floor(buttons.length / BUTTON_PER_ROW);
-        const row = Math.floor(index / BUTTON_PER_ROW);
-        const col = index % BUTTON_PER_ROW;
-        const startHeight = HEIGHT - (BUTTON_GUTTER + BUTTON_HEIGHT * rows) - BUTTON_GUTTER;
-        const l = (BUTTON_GUTTER + BUTTON_WIDTH) * col + BUTTON_GUTTER;
-        let t = startHeight + (BUTTON_HEIGHT + BUTTON_GUTTER) * row;
-        return new NavButton(l, t, BUTTON_WIDTH, BUTTON_HEIGHT, this.changeRoom.bind(this, key), index + 1, key);
-      }),
-      new Status(() => [this.power, this.air, this.distance])
+      new UIImage(0, 243, 512, 45, () => null, 'nav-panel'),
+      new Minimap(423, 199, 85, 85, () => null),
+      new Status(() => [this.power, this.air, this.distance]),
+      new NavButton(4, 247, 64, 16, this.changeRoom.bind(this, Rooms.BRIDGE), Rooms.BRIDGE),
+      new NavButton(72, 247, 64, 16, this.changeRoom.bind(this, Rooms.NAVIGATION), Rooms.NAVIGATION),
+      new NavButton(140, 247, 64, 16, this.changeRoom.bind(this, Rooms.SENSORS), Rooms.SENSORS),
+      new NavButton(4, 268, 64, 16, this.changeRoom.bind(this, Rooms.POWER), Rooms.POWER),
+      new NavButton(72, 268, 64, 16, this.changeRoom.bind(this, Rooms.LIFE_SUPPORT), Rooms.LIFE_SUPPORT),
+      new NavButton(140, 268, 64, 16, this.changeRoom.bind(this, Rooms.ENGINES), Rooms.ENGINES)
     ]);
   }
 

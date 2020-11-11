@@ -8,6 +8,6 @@ export class PowerRoom extends Room {
   }
 
   public enterRoom() {
-    this.ui.addElements([new Hotspot(740, 375, 69, 54, this.powerClick.bind(this))]);
+    this.ui.addElements([new Hotspot(370, 187, 34, 27, this.powerClick.bind(this))]);
   }
 }

@@ -8,6 +8,6 @@ export class LifeSupportRoom extends Room {
   }
 
   public enterRoom() {
-    this.ui.addElements([new Hotspot(1066, 276, 90, 70, this.powerClick.bind(this))]);
+    this.ui.addElements([new Hotspot(533, 138, 45, 35, this.powerClick.bind(this))]);
   }
 }

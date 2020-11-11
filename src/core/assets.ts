@@ -16,6 +16,24 @@ import sensorsOfflineCorrupted from '../images/sensors-offline-corrupted.png';
 import powerOnlineUncorrupted from '../images/power-online-uncorrupted.png';
 import powerOfflineUncorrupted from '../images/power-offline-uncorrupted.png';
 import powerOfflineCorrupted from '../images/power-offline-corrupted.png';
+import navPanel from '../images/nav-panel.png';
+import bridgeNav from '../images/nav-bridge.png';
+import bridgeNavActive from '../images/nav-bridge-active.png';
+import lifesupportNav from '../images/nav-life_support.png';
+import lifesupportNavActive from '../images/nav-life_support-active.png';
+import enginesNav from '../images/nav-engines.png';
+import enginesNavActive from '../images/nav-engines-active.png';
+import navigationNav from '../images/nav-navigation.png';
+import navigationNavActive from '../images/nav-navigation-active.png';
+import sensorsNav from '../images/nav-sensors.png';
+import sensorsNavActive from '../images/nav-sensors-active.png';
+import powerNav from '../images/nav-power.png';
+import powerNavActive from '../images/nav-power-active.png';
+import portraitStatic from '../images/portrait-static.png';
+import portraitCorporate from '../images/portrait-corporate.png';
+import portraitSelf from '../images/portrait-self.png';
+import minimapBg from '../images/minimap-bg.png';
+import statusBg from '../images/status-bg.png';
 
 export const images = {
   'bridge-online-uncorrupted': bridgeOnlineUncorrupted,
@@ -36,8 +54,28 @@ export const images = {
   'power-online-uncorrupted': powerOnlineUncorrupted,
   'power-offline-uncorrupted': powerOfflineUncorrupted,
   'power-offline-corrupted': powerOfflineCorrupted,
-  'portrait-cat': 'https://placekitten.com/200/300',
-  'portrait-placeholder': 'https://via.placeholder.com/150x150'
+
+  'minimap-bg': minimapBg,
+
+  'status-bg': statusBg,
+
+  'nav-panel': navPanel,
+  'nav-bridge': bridgeNav,
+  'nav-bridge-active': bridgeNavActive,
+  'nav-life_support': lifesupportNav,
+  'nav-life_support-active': lifesupportNavActive,
+  'nav-engines': enginesNav,
+  'nav-engines-active': enginesNavActive,
+  'nav-navigation': navigationNav,
+  'nav-navigation-active': navigationNavActive,
+  'nav-sensors': sensorsNav,
+  'nav-sensors-active': sensorsNavActive,
+  'nav-power': powerNav,
+  'nav-power-active': powerNavActive,
+
+  'portrait-static': portraitStatic,
+  'portrait-corporate': portraitCorporate,
+  'portrait-self': portraitSelf
 };
 
 import rumble from '../sound/rumble.wav';

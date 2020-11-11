@@ -1,4 +1,28 @@
 {
+  "10": [
+    {
+      "portrait": "portrait-static",
+      "message": "IGNORE THEM"
+    }
+  ],
+  "00": [
+    {
+      "portrait": "portrait-corporate",
+      "message": "...failure to meet delivery deadlines will find you\nliable for the full amount of losses incurred."
+    },
+    {
+      "portrait": "portrait-self",
+      "message": "..."
+    },
+    {
+      "portrait": "portrait-corporate",
+      "message": "This is Barbarus Logistics dispatch, do you copy\nus, Diptera?"
+    },
+    {
+      "portrait": "portrait-corporate",
+      "message": "Diptera, please respond."
+    }
+  ],
   "__test": [
     {
       "portrait": "portrait-cat",

@@ -8,6 +8,6 @@ export class NavRoom extends Room {
   }
 
   public enterRoom() {
-    this.ui.addElements([new Hotspot(963, 255, 55, 50, this.powerClick.bind(this))]);
+    this.ui.addElements([new Hotspot(481, 127, 27, 25, this.powerClick.bind(this))]);
   }
 }
